@@ -1,19 +1,15 @@
 package org.bbop.apollo
 
 import grails.converters.JSON
-import grails.transaction.NotTransactional
-import grails.transaction.Transactional
-import org.apache.shiro.SecurityUtils
-import org.apache.shiro.authc.UsernamePasswordToken
-import org.apache.shiro.session.Session
-import org.apache.shiro.subject.Subject
+import grails.gorm.transactions.NotTransactional
+import grails.gorm.transactions.Transactional
+import grails.web.servlet.mvc.GrailsParameterMap
 import org.bbop.apollo.gwt.shared.FeatureStringEnum
 import org.bbop.apollo.gwt.shared.GlobalPermissionEnum
 import org.bbop.apollo.gwt.shared.PermissionEnum
 import org.bbop.apollo.preference.UserOrganismPreferenceDTO
-import org.codehaus.groovy.grails.web.json.JSONArray
-import org.codehaus.groovy.grails.web.json.JSONObject
-import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
 
 import javax.servlet.http.HttpServletRequest
 
@@ -639,7 +635,7 @@ class PermissionService {
         return findHighestOrganismPermissionForCurrentUser(organism).rank >= permissionEnum.rank
     }
 
-    def authenticateWithToken(UsernamePasswordToken usernamePasswordToken = null, HttpServletRequest request) {
+    def authenticateWithToken(def usernamePasswordToken = null, HttpServletRequest request) {
 
         def authentications = configWrapperService.authentications
 
@@ -662,13 +658,13 @@ class PermissionService {
                 if (authenticationService.requiresToken()) {
                     def req = handleInput(request, request.parameterMap)
                     def authToken = usernamePasswordToken ?: null
-                    if (!authToken && req.username) {
-                        authToken = new UsernamePasswordToken(req.username as String, req.password as String)
-                    }
-                    if (authenticationService.authenticate(authToken, request)) {
-                        log.info "Authenticated user ${authToken.username} using ${auth.name}"
+//                    if (!authToken && req.username) {
+//                        authToken = new UsernamePasswordToken(req.username as String, req.password as String)
+//                    }
+//                    if (authenticationService.authenticate(authToken, request)) {
+//                        log.info "Authenticated user ${authToken.username} using ${auth.name}"
                         return true
-                    }
+//                    }
                 } else {
                     if (authenticationService.authenticate(request)) {
                         log.info "Authenticated user ${auth.name}"
@@ -688,12 +684,12 @@ class PermissionService {
      */
     Boolean sameUser(JSONObject jsonObject, HttpServletRequest request) {
         // not sure if permissions with translate through or not
-        Session session = SecurityUtils.subject.getSession(false)
+//        Session session = SecurityUtils.subject.getSession(false)
         if (!session) {
             // login with jsonObject tokens
             log.debug "creating session with found json object ${jsonObject.username}, ${jsonObject.password as String}"
-            UsernamePasswordToken authToken = new UsernamePasswordToken(jsonObject.username, jsonObject.password as String)
-            authenticateWithToken(authToken, request)
+//            UsernamePasswordToken authToken = new UsernamePasswordToken(jsonObject.username, jsonObject.password as String)
+//            authenticateWithToken(authToken, request)
         } else if (!jsonObject.username && SecurityUtils?.subject?.principal) {
             jsonObject.username = SecurityUtils?.subject?.principal
         } else if (!jsonObject.username && session.attributeKeys.contains(FeatureStringEnum.USERNAME.value)) {

@@ -2,23 +2,13 @@ package org.bbop.apollo
 
 import grails.converters.JSON
 import groovy.json.JsonBuilder
-import org.apache.shiro.SecurityUtils
-import org.bbop.apollo.Feature
 import org.bbop.apollo.event.AnnotationEvent
 import org.bbop.apollo.event.AnnotationListener
 import org.bbop.apollo.gwt.shared.FeatureStringEnum
 import org.bbop.apollo.gwt.shared.PermissionEnum
 import org.bbop.apollo.sequence.TranslationTable
-import org.codehaus.groovy.grails.web.json.JSONArray
-import org.codehaus.groovy.grails.web.json.JSONException
-import org.codehaus.groovy.grails.web.json.JSONObject
-import org.grails.plugins.metrics.groovy.Timed
-import org.restapidoc.annotation.RestApi
-import org.restapidoc.annotation.RestApiMethod
-import org.restapidoc.annotation.RestApiParam
-import org.restapidoc.annotation.RestApiParams
-import org.restapidoc.pojo.RestApiParamType
-import org.restapidoc.pojo.RestApiVerb
+import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
 import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.SendTo
@@ -36,7 +26,6 @@ import static grails.async.Promises.task
  *
  * This code primarily provides integration with genomic editing functionality visible in the JBrowse window.
  */
-@RestApi(name = "Annotation Services", description = "Methods for running the annotation engine")
 class AnnotationEditorController extends AbstractApolloController implements AnnotationListener {
 
 
@@ -75,7 +64,6 @@ class AnnotationEditorController extends AbstractApolloController implements Ann
     /**
      * @return
      */
-    @Timed
     def getUserPermission() {
         log.debug "getUserPermission ${params.data}"
         JSONObject returnObject = permissionService.handleInput(request, params)

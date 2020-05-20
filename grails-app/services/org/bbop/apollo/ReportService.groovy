@@ -1,13 +1,13 @@
 package org.bbop.apollo
 
 import grails.converters.JSON
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import org.bbop.apollo.gwt.shared.PermissionEnum
 import org.bbop.apollo.report.AnnotatorSummary
 import org.bbop.apollo.report.OrganismPermissionSummary
 import org.bbop.apollo.report.OrganismSummary
 import org.bbop.apollo.report.SequenceSummary
-import org.codehaus.groovy.grails.web.json.JSONArray
+import org.grails.web.json.JSONArray
 
 @Transactional
 class ReportService {

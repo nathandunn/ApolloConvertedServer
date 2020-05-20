@@ -1,9 +1,9 @@
 package org.bbop.apollo
 
-import grails.transaction.Transactional
+import grails.gorm.transactions.Transactional
 import groovy.json.JsonBuilder
 import org.bbop.apollo.sequence.search.blast.TabDelimittedAlignment
-import org.codehaus.groovy.grails.web.json.JSONObject
+import org.grails.web.json.JSONObject
 
 
 @Transactional
